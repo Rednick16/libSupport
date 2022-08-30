@@ -10,7 +10,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target `all'.  Stop.
 
 
-# Make data base, printed on Thu Aug 25 17:35:12 2022
+# Make data base, printed on Tue Aug 30 15:51:05 2022
 
 # Variables
 
@@ -23,6 +23,7 @@ make: *** No rule to make target `all'.  Stop.
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
 # automatic
+ 
 @F = $(notdir $@)
 # makefile
 CURDIR := /Users/fjulien/jailed_support
@@ -129,7 +130,7 @@ THEOS = /Users/fjulien/theos
 # environment
 LANG = C
 # environment
-VSCODE_PID = 49141
+VSCODE_PID = 70001
 # variable set hash-table stats:
 # Load=58/1024=6%, Rehash=0, Collisions=1/78=1%
 
@@ -213,6 +214,6 @@ GNUmakefile:
 # strcache size: total = 0 / max = 0 / min = 4096 / avg = 0
 # strcache free: total = 0 / max = 0 / min = 4096 / avg = 0
 
-# Finished Make data base on Thu Aug 25 17:35:12 2022
+# Finished Make data base on Tue Aug 30 15:51:05 2022
 
  
