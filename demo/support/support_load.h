@@ -15,22 +15,23 @@
 #define objc_hook   G982546284017645282936
 #define func_hook   G463829373452628922945
 #define symbol_hook G526354701963547283647
+#define hookedf_add G526354701963547283646
 
-#define MAX_SIZE 50
+#define MAX_SIZE 1024
 
 #define SUPPORT_STRING(x) #x
 #define SUPPORT_STATIC static
 #define SUPPORT_ASSERT(x) assert(x)
 
 #define INIT_API(h, n) n = (n##_t)dlsym(h, SUPPORT_STRING(n))
-#define DO_DEF(r, n, p)                 \
-    SUPPORT_VISIBILITY static r (*n) p; \
+#define DO_DEF(r, n, p)                         \
+    SUPPORT_VISIBILITY SUPPORT_STATIC r (*n) p; \
     typedef r (*n##_t) p;
 
 typedef void (*SUPPORT_IMP)(void /* id, selector, ... */);
 
 struct support_bypass  {
-    const char *uniqueIdentifier;
+    const char *uniqueIdentifier; /* spoof id */
     const char *bundleIdentifier;
     const char *files[MAX_SIZE];
     const char *symbols[MAX_SIZE];
@@ -40,6 +41,7 @@ DO_DEF(void, initilize, (struct support_bypass bypass));
 DO_DEF(void, objc_hook, (const char *class_name, const char *method_name, SUPPORT_IMP replacement, SUPPORT_IMP *original));
 DO_DEF(void, func_hook, (void*address, void* replacement, void**original)); /* not ready */
 DO_DEF(void, symbol_hook, (const char *symbol, void* replacement, void**original)); /* utilizes fishhook */
+DO_DEF(void, hookedf_add, (void* replacement, void* original, int* outIndex)); /* hooked functions to bypass */
 
 SUPPORT_VISIBILITY SUPPORT_STATIC void support_init()
 {
@@ -50,6 +52,7 @@ SUPPORT_VISIBILITY SUPPORT_STATIC void support_init()
 		INIT_API(libsupportHandle, objc_hook);
         INIT_API(libsupportHandle, symbol_hook);
 		INIT_API(libsupportHandle, func_hook);
+        INIT_API(libsupportHandle, hookedf_add);
 
 		dlclose(libsupportHandle);
 	}

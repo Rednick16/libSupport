@@ -5,6 +5,13 @@
 BOOL (*orig_didFinishLaunchingWithOptions)(id self, SEL selector, UIApplication* application, NSDictionary* launchOptions);
 BOOL new_didFinishLaunchingWithOptions(id self, SEL selector, UIApplication* application, NSDictionary* launchOptions) 
 {
+	/*
+	* pointer checks handler
+	* outIndex - returns current func index
+	*/
+	hookedf_add(reinterpret_cast<void*>(new_didFinishLaunchingWithOptions), 
+				reinterpret_cast<void*>(orig_didFinishLaunchingWithOptions), NULL);	
+				
 	// just objc hook example
 	// your code
 	NSLog(@"orig_didFinishLaunchingWithOptions");
@@ -14,14 +21,27 @@ BOOL new_didFinishLaunchingWithOptions(id self, SEL selector, UIApplication* app
 const char* (*orig_dyld_get_image_name)(uint32_t image_index);
 const char* new_dyld_get_image_name(uint32_t image_index)
 {
+	/*
+	* pointer checks handler
+	* outIndex - returns current func index
+	*/
+	hookedf_add(reinterpret_cast<void*>(new_dyld_get_image_name), 
+				reinterpret_cast<void*>(orig_dyld_get_image_name), NULL);
+
 	// useless if not used correctly.
 	NSLog(@"new_dyld_get_image_name");
 	return orig_dyld_get_image_name(image_index);
 }
 
 void (*orig_applicationDidBecomeActive)(id self, SEL selector, id arg0);
-void new_applicationDidBecomeActive(id self, SEL selector, id arg0) {
-
+void new_applicationDidBecomeActive(id self, SEL selector, id arg0) 
+{
+	/*
+	* pointer checks handler
+	* outIndex - returns current func index
+	*/
+	hookedf_add(reinterpret_cast<void*>(new_dyld_get_image_name), 
+				reinterpret_cast<void*>(orig_dyld_get_image_name), NULL);
 	NSLog(@"new_applicationDidBecomeActive");
 
 	orig_applicationDidBecomeActive(self, selector, arg0);
