@@ -1,6 +1,19 @@
 #include "UIKit/UIKit.h"
 #include "support/support.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif //__cplusplus
+
+extern void* SecTaskCreateFromSelf(void *);
+extern void* SecTaskCopySigningIdentifier(void *, void *);
+extern CFDictionaryRef SecTaskCopyValuesForEntitlements(void *, CFArrayRef, CFErrorRef  _Nullable *);
+extern CFTypeRef SecTaskCopyValueForEntitlement(void *, CFStringRef, CFErrorRef *);
+
+#ifdef __cplusplus
+}
+#endif //__cplusplus
+
 BOOL (*orig_didFinishLaunchingWithOptions)(id self, SEL selector, UIApplication* application, NSDictionary* launchOptions);
 BOOL new_didFinishLaunchingWithOptions(id self, SEL selector, UIApplication* application, NSDictionary* launchOptions) 
 {
@@ -24,6 +37,16 @@ void new_applicationDidBecomeActive(id self, SEL selector, id arg0)
 
 SUPPORT_CTOR 
 {
+    NSString* teamIdentifier = CFBridgingRelease(SecTaskCopyValueForEntitlement(SecTaskCreateFromSelf(NULL), CFSTR("com.apple.developer.team-identifier"), NULL));
+	NSString* bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+
+    // original bundleIdentifier after removing teamIdentifier
+    const char* cBundleIdentifier = [bundleIdentifier hasPrefix:teamIdentifier] ? 
+                                    [[bundleIdentifier stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@".%@", teamIdentifier] 
+                                                                                 withString:@""] UTF8String] : [bundleIdentifier UTF8String];
+
+    // DLOG(@"libSupport(%s) by Rednick16 Injected.", SupportGeVersion());
+
 	/* Create the structure
 	.teamIdentifier -> (Currently paused)
 	.bundleIdentifier -> "com.rednick16.myApp"
@@ -37,7 +60,7 @@ SUPPORT_CTOR
 	*/
     SupportEntryInfo entry_info = {
         .teamIdentifier = NULL,
-        .bundleIdentifier = NULL,
+        .bundleIdentifier = cBundleIdentifier,
         .files = {
             "CydiaSubstrate",
             "libsubstrate",
@@ -60,15 +83,18 @@ SUPPORT_CTOR
 
 	SupportHookInstanceMessage("UnityAppController", 
 				"application:didFinishLaunchingWithOptions:", 
-				new_didFinishLaunchingWithOptions,
-				orig_didFinishLaunchingWithOptions);	
+				&new_didFinishLaunchingWithOptions,
+				&orig_didFinishLaunchingWithOptions);	
 	
 	SupportHookInstanceMessage("UnityAppController", 
 				"applicationDidBecomeActive:", 
-				new_applicationDidBecomeActive,
-				orig_applicationDidBecomeActive);	
+				&new_applicationDidBecomeActive,
+				&orig_applicationDidBecomeActive);	
 
 	SupportHookSymbolEx("dyld_get_image_name", 
 				(void*)(new_dyld_get_image_name), 
 				(void**)(&orig_dyld_get_image_name));
+
+    SupportHookClassMessage("APMAEU", "isFAS", WRAPPER_OBJC_HOOK_TRUE, NULL);
+    SupportHookClassMessage("GULAppEnvironmentUtil", "isFromAppStore", WRAPPER_OBJC_HOOK_TRUE, NULL);
 }

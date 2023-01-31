@@ -14,7 +14,7 @@ LIBRARY_NAME = libSupport
 $(LIBRARY_NAME)_FILES = jailed.mm
 $(LIBRARY_NAME)_CFLAGS = -fobjc-arc -fvisibility=hidden
 $(LIBRARY_NAME)_CCFLAGS = -fobjc-arc -fvisibility=hidden
-$(LIBRARY_NAME)_FRAMEWORKS = UIKit
+$(LIBRARY_NAME)_FRAMEWORKS = UIKit Security
 $(LIBRARY_NAME)_INSTALL_PATH = @executable_path/Frameworks
 
 $(LIBRARY_NAME)_LINKAGE_TYPE = dynamic
