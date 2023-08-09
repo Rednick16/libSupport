@@ -1,8 +1,8 @@
 #ifndef swizzling_h
 #define swizzling_h
 
-#import <objc/runtime.h>
-#import <objc/message.h>
+#include <objc/runtime.h>
+#include <objc/message.h>
 
 #if !defined(SUPPORT_EXPORT)
 #define SUPPORT_VISIBILITY __attribute__((visibility("hidden")))
@@ -11,9 +11,9 @@
 #endif
 
 #define SupportHookInstanceMessage(clazz, sel, imp , result) \
-SupportHookMessageEx( objc_getClass(clazz), sel_registerName(sel), (IMP)(&imp), (IMP*)(&result) )
+SupportHookMessageEx( objc_getClass(clazz), sel_registerName(sel), (IMP)(imp), (IMP*)(result) )
 #define SupportHookClassMessage(clazz, sel, imp , result) \
-SupportHookMessageEx( objc_getMetaClass(clazz), sel_registerName(sel), (IMP)(&imp), (IMP*)(&result) )
+SupportHookMessageEx( objc_getMetaClass(clazz), sel_registerName(sel), (IMP)(imp), (IMP*)(result) )
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,9 +1,9 @@
-Package: com.rednick16.libsupport
-Name: libSupport
-Version: 0.0.1
+Package: com.rednick16.libsupport.bypassinjector
+Name: BypassInjector
+Version: 0.2
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
+Description: Inject into any mobile app with sideload detection and watch the magic happen!
 Maintainer: Red16
 Author: Red16
-Section: Tweaks
+Section: 
 Depends: 
