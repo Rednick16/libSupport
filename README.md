@@ -50,5 +50,6 @@ I plan to provide an xcode framework (LSAutoInjector.framework) which will have 
 - [Rednick16](https://github.com/Rednick16)
 - [Busmanl30](https://github.com/busmanl30)
 - [jjolano (shadow)](https://github.com/jjolano/shadow)
+
 ## License
 libSupport is licensed under the MIT License, see [support.h](support/support.h) for the full thing.
