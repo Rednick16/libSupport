@@ -1,0 +1,7 @@
+# Production
+.theos/
+
+# Misc
+.DS_Store
+.backup/
+.vscode/

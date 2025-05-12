@@ -1,0 +1,8 @@
+Package: com.rednick16.libsupport
+Name: libSupport
+Architecture: iphoneos-arm
+Description: Powerful app modification library!
+Maintainer: Red16
+Author: Red16
+Section: System
+Version: 1.2.3
